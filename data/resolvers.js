@@ -1,12 +1,22 @@
 import mongoose from 'mongoose';
 import { Friends } from './dbConnectors';
+import { Aliens } from './dbConnectors';
 // resolver map
 export const resolvers = {
   Query: {
-    getFriend: ({id}) => {
-        return new Friend(id, friendDB[id]);
+    getOneFriend: (root, {id}) => {
+        return new Promise (resolve, object);
+          Friend.findById(id, (err, friend) => {
+            if (err) reject(err)
+            else resolve(friend)
+          });
+        },
+
+    getAliens: () => {
+        return Aliens.findAll();
     },
   },
+
   Mutation: {
     createFriend: (root, {input}) => {
       const newFriend = new Friends({
@@ -34,6 +44,14 @@ export const resolvers = {
           else resolve(friend)
         })
       })
-    }
-  },
-};
+    },
+    deteleFriend: (root, {id}) => {
+      return new Promise((resolve, object) => {
+        Friends.remove({ _id: input.id}, (err) => {
+          if (err) reject(err)
+          else resolve('Successfully deleted friend')
+          })
+        })
+      },
+    },
+  };
